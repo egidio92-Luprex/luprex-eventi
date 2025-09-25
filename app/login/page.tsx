@@ -1,5 +1,4 @@
 "use client";
-import { signIn } from "next-auth/react";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -10,12 +9,18 @@ export default function LoginPage() {
   const handleLogin = async (e: any) => {
     e.preventDefault();
     setErr(null);
-    const res = await signIn("credentials", { email, password, redirect: false });
-    if (res?.error) {
-      setErr("Credenziali non valide");
-      return;
+    const res = await fetch("https://LuprexEventi.abacusai.app/api/login", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ email, password }),
+      credentials: "include"
+    });
+    const data = await res.json();
+    if(res.ok) {
+      window.location.href = "/dashboard";
+    } else {
+      setErr(data.error || "Credenziali non valide");
     }
-    window.location.href = "/dashboard";
   };
 
   return (

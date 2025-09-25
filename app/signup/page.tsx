@@ -9,10 +9,11 @@ export default function SignupPage() {
   const handleSignup = async (e:any) => {
     e.preventDefault();
     setMsg(null);
-    const res = await fetch("/api/signup", {
+    const res = await fetch("https://LuprexEventi.abacusai.app/api/signup", {
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({email,password})
+      body:JSON.stringify({email,password}),
+      credentials: "include"
     });
     const data = await res.json();
     if(res.ok) setMsg("Registrazione completata! Vai al login.");
